@@ -28,13 +28,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
                         @forelse ($donaturs as $donatur)
                             <?php $status = $donatur->status == 1 ? 'primary' : 'secondary'; ?>
                             <tr>
-                                <td>{{ $i++ }}</td>
+                                <td>{{ $donaturs->firstItem() + $loop->iteration - 1 }}</td>
                                 <td class="d-xl-table-cell">
                                     <a name="" id="" class=""
                                         href="{{ url('/donaturs/' . $donatur->id) }}" role="button">

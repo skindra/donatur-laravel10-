@@ -7,9 +7,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Http\JsonResponse;
 class UserController extends Controller
 {
+
+
+
     public function all()
     {
         return response()->json([
@@ -59,4 +62,30 @@ class UserController extends Controller
 
         ]);
     }
+
+    public function show(User $user)
+    {
+        return view('user.show',compact('user'));
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        alert('Selamat!','Data Berhasil di hapus','success');
+        return response()->json(['success' => 'Hapus data berhasil.']);
+    }
+
+    public function update(Request $request, User $user): JsonResponse
+    {
+
+        $validateData = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+        ]);
+
+        $user->update($validateData);
+        alert('Selamat!','Data Berhasil di Ubah','success');
+        return response()->json(['success' => 'Update data berhasil.']);
+    }
+
 }

@@ -4,14 +4,9 @@
 
 @section('content')
 
-    @if (session()->has('pesan'))
-        <div class="alert alert-success" role="alert">
-            {{ session()->get('pesan') }}
-        </div>
-    @endif
     <div class="card flex-fill">
         <div class="card-header d-flex justify-content-between">
-            <h5 class="card-title mb-0">Daftar Transaksi</h5>
+            <h5 class="card-title mb-0">Daftar Transaksi {{ $user ?? 'Semua' }} </h5>
             <div>
                 <a name="" id="" class="btn btn-primary" href="{{ route('transactions.create') }}"
                     role="button">Tambah</a>
@@ -32,13 +27,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $i = 1;
-                        @endphp
 
                         @forelse ($transactions as $transaction)
                             <tr>
-                                <td>{{ $i++ }}</td>
+                                <td>{{ $transactions->firstItem() + $loop->iteration - 1 }}</td>
                                 <td class="d-xl-table-cell">
                                     <a name="" data-bs-judul="{{ strtoupper($transaction->donatur->nama) }}"
                                         id="tombol" data-bs-toggle="modal" data-bs-target="#exampleModal" class=""
@@ -86,6 +78,12 @@
             </div>
         </div>
 
+        @isset($user)
+            @component('tools.button', ['class' => 'warning text-dark', 'link' => url()->previous()])
+                Kembali
+            @endcomponent
+
+        @endisset
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="judulModal" aria-hidden="true">

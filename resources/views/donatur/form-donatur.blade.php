@@ -28,7 +28,7 @@
         <div class="mb-3">
             <label class="form-label">Nama Outlet</label>
             <input id="nama_outlet" type="text" class="form-control @error('nama_outlet') is-invalid @enderror"
-                name="nama_outlet" value="{{ old('nama_outlet') }}" >
+                name="nama_outlet" value="{{ old('nama_outlet') }}">
 
             @error('nama_outlet')
                 <span class="invalid-feedback" role="alert">
@@ -110,6 +110,9 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
+
+
+
         <button type="submit" class="btn btn-primary mb-2">Daftar</button>
     </form>
 @endsection

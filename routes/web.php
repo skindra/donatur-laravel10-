@@ -11,6 +11,10 @@ use App\Http\Controllers\QrCodeController;
 use App\Models\Donatur as Donaturs;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Lainya\UserController;
+use App\Http\Requests\Transaction;
+use RealRashid\SweetAlert\Facades\Alert;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,41 +53,6 @@ Route::get('status', function () {
 });
 
 Route::redirect('/', '/form-pendaftaran');
-
-// Route::post('logout',[App\Http\Controllers\Auth\LoginController::class,'logout']);
-
-Route::get('generate-admin', function () {
-    $data = User::where('email', 'admin@gmail.com')->first();
-    if (!$data) {
-
-        User::create(
-            [
-                'name' => 'admin',
-                'email' => 'admin@gmail.com',
-                'password' => Hash::make('12345678'),
-            ]
-        );
-
-        return "Berhasil di proses";
-    }
-    return "Data sudah ada di proses";
-});
-Route::get('generate-staff', function () {
-    $data = User::where('email', 'staff@gmail.com')->first();
-    if (!$data) {
-
-        User::create(
-            [
-                'name' => 'staff',
-                'email' => 'staff@gmail.com',
-                'password' => Hash::make('12345678'),
-            ]
-        );
-
-        return "Berhasil di proses";
-    }
-    return "Data sudah ada di proses";
-});
 
 Route::get('kode-donatur', [DonatursController::class, 'kodeDonatur'])->name('kode-donatur');
 Route::get('nama-donatur', [DonatursController::class, 'namaDonatur'])->name('nama-donatur');
@@ -153,9 +122,31 @@ Route::get('donatur-hasmany',function(){
 
 // relation trancaction belongto
 Route::get('belongto',function(){
-    $data = App\Models\Transaction::find(2);
-    echo "Data Transaction" .$data->nominal.$data->user->name."<br>";
+    $data = App\Models\Transaction::find(1);
+    dd($data);
+    // echo "Data Transaction" .$data->user->name."<br>";
     // foreach ($data->user as $k) {
     //     echo " Kode = ".$k->name. "<br>";
     // }
 });
+
+/* Export dan Import */
+Route::controller(UserController::class)->group(function(){
+    Route::get('users', 'index');
+    Route::get('users-export', 'export')->name('users.export');
+    Route::post('users-import', 'import')->name('users.import');
+});
+
+/* Lainnya */
+Route::get('/donatur-rekap',[TransactionController::class,'donaturRekap'])->name('donatur.rekap');
+Route::get('/transactions-export',[TransactionController::class,'transactionsExport'])->name('transactions.export')->middleware('can:create,'.User::class);
+
+/* Cek transaksi */
+Route::get('transaksi-user/{user_id}',[TransactionController::class,'transaksiUser'])->name('transaksi-user');
+Route::get('transaksi-donatur/{donatur_id}',[TransactionController::class,'transaksiDonatur'])->name('transaksi-donatur');
+
+/* Show user */
+// Route
+Route::get('user/{user}',[ App\Http\Controllers\Api\UserController::class , 'show'])->name('user.show')->middleware('can:view,user');
+Route::put('user/{user}',[ App\Http\Controllers\Api\UserController::class , 'update'])->name('user.update')->middleware('can:update,user');
+Route::delete('user/{user}',[ App\Http\Controllers\Api\UserController::class , 'destroy'])->name('user.destroy')->middleware('can:delete,user');

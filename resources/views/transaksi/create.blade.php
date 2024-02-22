@@ -4,7 +4,7 @@
 @section('content')
     <h1>Tambah Transaksi</h1>
     <hr>
-    <form action="{{ route('transactions.store') }}" method="POST">
+    <form action="{{ route('transactions.store') }}" method="POST" autocomplete="off">
         @csrf
 
         <div class="mb-3">
@@ -15,22 +15,20 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-        <input type="hidden" name="nama" value="" id="nama">
-        <div class="mb-3">
-            <label class="form-label" for="keterangan">Keterangan</label>
-            <input type="text" id="keterangan" name="keterangan" value="{{ old('keterangan') }}"
-                class="form-control @error('keterangan') is-invalid @enderror">
-            @error('keterangan')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-
-
         <div class="mb-3">
             <label class="form-label" for="nominal">Nominal</label>
             <input type="text" id="nominal" name="nominal" value="{{ old('nominal') }}"
                 class="form-control @error('nominal') is-invalid @enderror">
             @error('nominal')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="keterangan">Keterangan</label>
+            <input type="text" id="keterangan" name="keterangan" value="{{ old('keterangan') }}"
+                class="form-control @error('keterangan') is-invalid @enderror">
+            @error('keterangan')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>

@@ -17,17 +17,23 @@
     </div>
     <div class="mb-3" id="status">
         <label class="form-label">Status</label>
-        <div class="d-flex">
-            <select class="form-select" name="status" aria-label="Default select example">
-                <option value="" selected>Daftar</option>
-                <option value="rekam" {{ old('status') ?? $transaction->status == 'rekam' ? 'selected' : '' }}>Rekam
-                </option>
-                <option value="validasi" {{ old('status') ?? $transaction->status == 'validasi' ? 'selected' : '' }}>
-                    Validasi</option>
-                <option value="setuju" {{ old('status') ?? $transaction->status == 'setuju' ? 'selected' : '' }}>
-                    Setuju</option>
-            </select>
-        </div>
+        @can('create', App\Models\Donatur::class)
+            <div class="d-flex">
+                <select class="form-select" name="status" aria-label="Default select example">
+                    <option value="" selected>Daftar</option>
+                    <option value="rekam" {{ old('status') ?? $transaction->status == 'rekam' ? 'selected' : '' }}>Rekam
+                    </option>
+                    <option value="validasi" {{ old('status') ?? $transaction->status == 'validasi' ? 'selected' : '' }}>
+                        Validasi</option>
+                    <option value="setuju" {{ old('status') ?? $transaction->status == 'setuju' ? 'selected' : '' }}>
+                        Setuju</option>
+                </select>
+            </div>
+        @endcan
+
+        @cannot('create', App\Models\Donatur::class)
+            <p>{{$transaction->status}}</p>
+        @endcannot
     </div>
     <button type="submit" class="btn btn-primary">Ubah</button>
     <button type="button" onclick="hapus({{ $transaction->id }})" class="btn btn-danger">Hapus</button>

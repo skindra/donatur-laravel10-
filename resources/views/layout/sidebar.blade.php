@@ -38,9 +38,9 @@
                 Lainnya
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
-                    <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Charts</span>
+            <li class="sidebar-item @yield('donatur-rekap')">
+                <a class="sidebar-link" href="{{ route('donatur.rekap', []) }}">
+                    <i class="align-middle" data-feather="printer"></i> <span class="align-middle">Export</span>
                 </a>
             </li>
         </ul>
