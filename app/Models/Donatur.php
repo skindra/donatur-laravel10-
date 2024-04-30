@@ -23,6 +23,13 @@ class Donatur extends Model
             set: fn (string $value) => strtoupper($value),
         );
     }
+    protected function kode(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => strtoupper($value),
+            set: fn (string $value) => strtoupper($value),
+        );
+    }
 
     public function transactions(): HasMany
     {

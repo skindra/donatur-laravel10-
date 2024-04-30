@@ -77,7 +77,6 @@
                 </div>
             </div>
         </div>
-
         @isset($user)
             @component('tools.button', ['class' => 'warning text-dark', 'link' => url()->previous()])
                 Kembali

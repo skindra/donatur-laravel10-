@@ -32,10 +32,11 @@ Route::get('/', function () {
 });
 
 Route::resource('donaturs', DonatursController::class)->middleware('auth');
+Route::get('donatur-check', [DonatursController::class, 'checkDonatur'])->name('donatur.check')->middleware('auth');
 Route::resource('transactions', TransactionController::class)->middleware('auth');
 
-Route::get('transaction/{kode}', [App\Http\Controllers\Api\TransaksiController::class,'formDonasi']);
-Route::post('send-donasi', [App\Http\Controllers\Api\TransaksiController::class,'sendDonasi']);
+Route::get('transaction/{kode}', [App\Http\Controllers\Api\TransaksiController::class, 'formDonasi']);
+Route::post('send-donasi', [App\Http\Controllers\Api\TransaksiController::class, 'sendDonasi']);
 
 // Route::put('donaturs/{id}/edit',[DonatursController::class,'update'])->name('donaturs.edit');
 
@@ -62,91 +63,27 @@ Route::get('/qrcode', [QrCodeController::class, 'show']);
 Route::get('/qrcode-download', [QrCodeController::class, 'download']);
 Route::get('test', fn () => phpinfo());
 
-// Faker
-Route::get('faker-donatur', function () {
-    $faker = \Faker\Factory::create('id_ID');
-    // $donatur = App\Models\Donaturs::factory()->count(10)->create();
-    // dump($donatur);
-    for ($i = 1; $i <= 10; $i++) {
-        $kode = sprintf("%04d", $i);
-        Donaturs::create([
-            'kode'=> 'A'.$kode,
-            'nama' => $faker->firstNameMale().' '.$faker->lastNameMale(),
-            'nama_outlet' => $faker->company(),
-            'alamat' => $faker->address(),
-            'no_hp' => $faker->phoneNumber(),
-            'jenkel' => 'L',
-            'status' => '1',
-            'map' => '-',
-        ]);
-
-    }
-    return "Data Donatur berhasil ditambah";
-});
-Route::get('faker-formrequest', function () {
-
-    for ($i = 1; $i <= 10; $i++) {
-        $str = new Illuminate\Support\Str;
-        // $id = $faker->unique()->randomDigit();
-        $kode = sprintf("%04d", $i);
-        // echo $i . ') ' . $kode . " > ";
-        // echo $str->random(10) . "<br>";
-        App\Models\FormRequest::create(
-            [
-                'kode_donatur' => "A" . $kode,
-                'uniq' => $str->random(10),
-                'is_aktif' => true,
-            ]
-        );
-    }
-    return "Data Form berhasil ditambah";
-    // dump($faker);
-});
-
-
-// relation user hasMany
-Route::get('user-hasmany',function(){
-    $data = User::find(2);
-    echo "Data User" .$data->name."<br>";
-    foreach ($data->transactions as $k) {
-        echo " Kode = ".$k->keterangan. "<br>";
-    }
-});
-Route::get('donatur-hasmany',function(){
-    $data = Donaturs::find(2);
-    echo "Data donatur" .$data->nama."<br>";
-    foreach ($data->transactions as $k) {
-        echo " Kode = ".$k->keterangan. "<br>";
-    }
-});
-
-// relation trancaction belongto
-Route::get('belongto',function(){
-    $data = App\Models\Transaction::find(1);
-    dd($data);
-    // echo "Data Transaction" .$data->user->name."<br>";
-    // foreach ($data->user as $k) {
-    //     echo " Kode = ".$k->name. "<br>";
-    // }
-});
 
 /* Export dan Import */
-Route::controller(UserController::class)->group(function(){
+Route::controller(UserController::class)->group(function () {
     Route::get('users', 'index');
     Route::get('users-export', 'export')->name('users.export');
     Route::post('users-import', 'import')->name('users.import');
 });
 
 /* Lainnya */
-Route::get('/donatur-rekap',[TransactionController::class,'donaturRekap'])->name('donatur.rekap');
-Route::get('/transactions-export',[TransactionController::class,'transactionsExport'])->name('transactions.export')->middleware('can:create,'.User::class);
+Route::get('/donatur-rekap', [TransactionController::class, 'donaturRekap'])->name('donatur.rekap');
+Route::post('/transactions-export', [TransactionController::class, 'transactionsExport'])->name('transactions.export')->middleware('can:create,' . User::class);
+Route::get('/form-donatur-rekap', function () {
+    return view('lainnya.form-donatur-rekap');
+});
 
 /* Cek transaksi */
-Route::get('transaksi-user/{user_id}',[TransactionController::class,'transaksiUser'])->name('transaksi-user');
-Route::get('transaksi-donatur/{donatur_id}',[TransactionController::class,'transaksiDonatur'])->name('transaksi-donatur');
+Route::get('transaksi-user/{user_id}', [TransactionController::class, 'transaksiUser'])->name('transaksi-user');
+Route::get('transaksi-donatur/{donatur_id}', [TransactionController::class, 'transaksiDonatur'])->name('transaksi-donatur');
 
 /* Show user */
 // Route
-Route::get('user/{user}',[ App\Http\Controllers\Api\UserController::class , 'show'])->name('user.show')->middleware('can:view,user');
-Route::put('user/{user}',[ App\Http\Controllers\Api\UserController::class , 'update'])->name('user.update')->middleware('can:update,user');
-Route::delete('user/{user}',[ App\Http\Controllers\Api\UserController::class , 'destroy'])->name('user.destroy')->middleware('can:delete,user');
+Route::get('user/{user}', [App\Http\Controllers\Api\UserController::class, 'show'])->name('user.show')->middleware('can:view,user');
+Route::put('user/{user}', [App\Http\Controllers\Api\UserController::class, 'update'])->name('user.update')->middleware('can:update,user');
+Route::delete('user/{user}', [App\Http\Controllers\Api\UserController::class, 'destroy'])->name('user.destroy')->middleware('can:delete,user');

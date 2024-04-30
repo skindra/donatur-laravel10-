@@ -15,7 +15,7 @@
             </li>
             <li class="sidebar-item @yield('donatur')">
                 <a class="sidebar-link" href=" {{ route('donaturs.index') }}">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Donatur</span>
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Data Donatur</span>
                 </a>
             </li>
 
@@ -29,6 +29,12 @@
             <li class="sidebar-item @yield('laporan')">
                 <a class="sidebar-link " href=" {{ url('transactions') }} ">
                     <i class="align-middle" data-feather="square"></i> <span class="align-middle">Transaksi</span>
+                </a>
+            </li>
+            <li class="sidebar-item @yield('cekDonatur')">
+
+                <a class="sidebar-link " href=" {{ route('donatur.check') }} ">
+                    <i class="align-middle" data-feather="user-check"></i> <span class="align-middle">Cek Donatur</span>
                 </a>
             </li>
 

@@ -11,7 +11,7 @@
             <label class="form-label">Kode</label>
             <input type="hidden" name="kode" value=" {{ $donatur->kode }}">
             <input id="kode" type="text" class="form-control @error('kode') is-invalid @enderror" name=""
-                disabled value="{{ old('kode') ?? $donatur->kode }}" autofocus>
+                value="{{ old('kode') ?? $donatur->kode }}" autofocus>
 
             @error('kode')
                 <span class="invalid-feedback" role="alert">

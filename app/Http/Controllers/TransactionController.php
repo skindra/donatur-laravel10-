@@ -99,13 +99,19 @@ class TransactionController extends Controller
     public function donaturRekap()
     {
         $transaction = Transaction::with('donatur', 'user')->selectRaw('sum(nominal) as sum')->get();
-        $donatur = Donatur::has('transactions')->paginate(5);
+        $donatur = Donatur::whereHas('transactions', function ($query) {
+            $query->whereYear('created_at', date('Y'));
+            $query->whereMonth('created_at', date('m'));
+        })->paginate(5);
         return view('lainnya.donatur-rekap', compact('transaction', 'donatur'));
     }
 
-    public function transactionsExport() {
-        return Excel::download(new RekapTransactionExport, 'rekap.xlsx');
+    public function transactionsExport(Request $request)
+    {
+        $nama_excel = time();
+        return Excel::download(new RekapTransactionExport($request->tahun, $request->bulan), 'rekap' . $nama_excel . '.xlsx');
     }
+
 
     public function transaksiUser($user_id)
     {

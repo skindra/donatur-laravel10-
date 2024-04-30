@@ -13,7 +13,7 @@ class DonaturPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->email == "admin@gmail.com";
+        return $user->id == "1";
         //
     }
 
@@ -22,7 +22,7 @@ class DonaturPolicy
      */
     public function view(User $user, Donaturs $donaturs): bool
     {
-        return $user->email == "admin@gmail.com";
+        return $user->id == "1";
         //
     }
 
@@ -31,8 +31,8 @@ class DonaturPolicy
      */
     public function create(User $user): bool
     {
-        $data = in_array($user->email, [
-            'admin@gmail.com',
+        $data = in_array($user->id, [
+            '1',
         ]);
         return $data;
         //
@@ -52,8 +52,8 @@ class DonaturPolicy
      */
     public function delete(User $user, Donaturs $donaturs): bool
     {
-        $data = in_array($user->email, [
-            'admin@gmail.com',
+        $data = in_array($user->id, [
+            '1',
         ]);
         return $data;
         //

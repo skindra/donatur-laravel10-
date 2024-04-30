@@ -2,7 +2,6 @@
 @section('donatur-rekap', 'active')
 
 @section('content')
-
     @if (session()->has('pesan'))
         <div class="alert alert-success" role="alert">
             {{ session()->get('pesan') }}
@@ -10,15 +9,15 @@
     @endif
     <div class="card flex-fill">
         <div class="card-header d-flex justify-content-between">
-            <h5 class="card-title mb-0">Rekap Donatur</h5>
+            <h5 class="card-title mb-0">Rekap Donatur {{ date('F Y')}} </h5>
             <div>
-                <a name="" id="" class="btn btn-primary" href="{{ route('transactions.create') }}"
-                    role="button"> <i class="align-middle" data-feather="plus"></i> <span
-                        class="align-middle">Tambah</span></a>
+                <a id="" class="btn btn-primary" href="{{ route('transactions.create') }}" role="button"> <i
+                        class="align-middle" data-feather="plus"></i> <span class="align-middle">Tambah</span></a>
                 @can('create', App\Models\User::class)
-                    <a name="" id="" class="btn btn-success" href="{{ route('transactions.export') }}"
-                        role="button"> <i class="align-middle" data-feather="download"></i> <span
-                            class="align-middle">Export</span></a>
+                    {{-- <a id="" class="btn btn-success" href="{{url('transactions-export')}}" role="button"> <i class="align-middle"
+                            data-feather="download"></i> <span class="align-middle">Export</span></a> --}}
+                    <a id="export" class="btn btn-success" href="#" role="button"> <i class="align-middle"
+                            data-feather="download"></i> <span class="align-middle">Export</span></a>
                 @endcan
             </div>
         </div>
@@ -41,7 +40,13 @@
                             <tr>
                                 <td>{{ $donatur->firstItem() + $loop->iteration - 1 }}</td>
                                 <td>{{ $d->kode }} </td>
-                                <td>{!! (count($d->transactions) === 1 ) ? $d->nama : "<a href='".route('transaksi-donatur',['donatur_id' => $d->id])."' class='text-danger' >".$d->nama."</a>"  !!}</td>
+                                <td>{!! count($d->transactions) === 1
+                                    ? $d->nama
+                                    : "<a href='" .
+                                        route('transaksi-donatur', ['donatur_id' => $d->id]) .
+                                        "' class='text-danger' >" .
+                                        $d->nama .
+                                        '</a>' !!}</td>
                                 <td>{{ $d->nama_outlet }}</td>
                                 <td>
                                     @php
@@ -81,5 +86,34 @@
             </div>
         </div>
     </div>
+    @include('layouts.modal')
+@endsection
+
+
+@section('javascript')
+
+    <script>
+        $('document').ready(function() {
+            const myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+                backdrop: 'static',
+                keyboard: false
+            })
+
+            $('#export').click(function() {
+                myModal.show()
+
+            });
+
+            document.getElementById('exampleModal').addEventListener('shown.bs.modal', event => {
+                const modalTitle = exampleModal.querySelector('.modal-title');
+                modalTitle.textContent = `Export Data`;
+                $.get('/form-donatur-rekap', {}, function(data) {
+                    $('.modal-body').empty().append(data);
+                })
+            })
+
+
+        })
+    </script>
 
 @endsection

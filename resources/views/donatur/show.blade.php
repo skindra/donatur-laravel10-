@@ -46,8 +46,9 @@
 
             </li>
             <li class="list-group-item">Jenis Kelamin : {{ $donatur->jenkel }}</li>
-            <li class="list-group-item">Status {{ $donatur->status == 1 ? 'Aktif' : 'No Aktif' }}</li>
-            <li class="list-group-item">Tanggal Daftar {{ $donatur->created_at->isoFormat('DD-MM-YYYY HH:mm') }}</li>
+            <li class="list-group-item">Status : {{ $donatur->status == 1 ? 'Aktif' : 'No Aktif' }}</li>
+            <li class="list-group-item">Donasi diambil : {!! ($donatur->transactions_count < 1 ) ? '<span class="text-danger">Belum</span>' : '<span class="text-success">Sudah</span>'  !!}</li>
+            <li class="list-group-item">Tanggal Daftar : {{ $donatur->created_at->isoFormat('DD-MM-YYYY HH:mm') }}</li>
         </ul>
     </div>
 

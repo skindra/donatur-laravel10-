@@ -101,6 +101,7 @@ class DonatursController extends Controller
      */
     public function show(Donaturs $donatur): Response
     {
+        $donatur->loadCount('transactions');
         return response()->view('donatur.show', compact('donatur'));
     }
 
@@ -145,4 +146,13 @@ class DonatursController extends Controller
         $data = Donaturs::where('')->where('kode', 'LIKE', '%' . request('q') . '%')->paginate(10);
         return response()->json();
     }
+
+    function checkDonatur():Response
+    {
+        $donaturs = Donaturs::withCount('transactions')->paginate(5);
+
+        // dd($donaturs->toArray());
+        return response()->view('donatur.check', compact('donaturs'));
+    }
+
 }

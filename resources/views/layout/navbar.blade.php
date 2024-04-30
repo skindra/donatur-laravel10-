@@ -11,7 +11,7 @@
                 </a>
 
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                    <img src="/img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1"
+                    <img src="/logo.png" class="avatar img-fluid rounded me-1"
                         alt="{{ Auth::user()->name ?? '' }}" />
                     <span class="text-dark">{{ Auth::user()->name ?? '' }}</span>
                 </a>

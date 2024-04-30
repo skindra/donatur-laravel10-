@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('donatur', 'active')
+@section('cekDonatur', 'active')
 @section('content')
     @if (session()->has('pesan'))
         <div class="alert alert-success" role="alert">
@@ -18,36 +18,35 @@
 
 
             <div class="table-responsive">
-                <table class="table table-hover my-0 table-striped">
+                <table class="table table-hover my-0">
                     <thead>
                         <tr>
                             <th class="d-xl-table-cell">#</th>
                             <th>Nama</th>
                             <th class="d-xl-table-cell">Jenis Kelamin</th>
                             <th>Status</th>
-                            <th>QR Code</th>
                             <th>No HP</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($donaturs as $donatur)
-                            <?php $status = $donatur->status == 1 ? 'primary' : 'secondary'; ?>
-                            <tr>
+                            <?php 
+                            $status = $donatur->status == 1 ? 'primary' : 'secondary';
+
+                            $is_check =($donatur->transactions_count < 1 ) ? "table-warning" : '';
+                            ?>
+                            <tr class="{{$is_check}}">
                                 <td>{{ $donaturs->firstItem() + $loop->iteration - 1 }}</td>
                                 <td class="d-xl-table-cell">
                                     <a name="" id="" class=""
                                         href="{{ url('/donaturs/' . $donatur->id) }}" role="button">
-                                        {{ $donatur->nama }}</a>
+                                        {{ $donatur->nama }}</a> {!! ($donatur->transactions_count < 1) ? '<span class="fs-6">Belum diambil</span>' : "" ; !!}
 
                                 </td>
                                 <td class="d-xl-table-cell">{{ $donatur->jenkel }}</td>
                                 <td><span
                                         class="badge bg-{{ $status }}">{{ $donatur->status == 1 ? 'Aktif' : 'No Aktif' }}</span>
                                 </td>
-                                <td class="d-xl-table-cell"><img class="img img-thumbnail"
-                                        src="data:image/png;base64, {!! base64_encode(
-                                            QrCode::format('png')->size(200)->errorCorrection('M')->generate( $donatur->kode),
-                                        ) !!} "></td>
                                 <td class="d-xl-table-cell">{{ $donatur->no_hp }}</td>
                             </tr>
                         @empty

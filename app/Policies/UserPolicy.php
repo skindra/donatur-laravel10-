@@ -21,8 +21,8 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return in_array($user->email, [
-            'admin@gmail.com', $model->email,
+        return in_array($user->id, [
+            '1', $model->id,
         ]);
         //
     }
@@ -32,8 +32,8 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-         $data = in_array($user->email, [
-            'admin@gmail.com',
+        $data = in_array($user->id, [
+            '1',
         ]);
         return $data;
     }
@@ -43,8 +43,8 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return in_array($user->email, [
-            'admin@gmail.com', $model->email,
+        return in_array($user->id, [
+            '1', $model->id,
         ]);
     }
 
@@ -53,8 +53,8 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return in_array($user->email, [
-            'admin@gmail.com', $model->email,
+        return in_array($user->id, [
+            '1', $model->id,
         ]);
     }
 
